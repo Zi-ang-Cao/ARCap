@@ -62,13 +62,23 @@ parser.add_argument("--file", type=str, default=None)
 parser.add_argument("--exp_name", type=str, required=True)
 args = parser.parse_args()
 
+if not os.path.isdir("trajs"):
+    os.mkdir("trajs")
+
+if not os.path.isdir(f"trajs/{args.exp_name}"):
+    os.mkdir(f"trajs/{args.exp_name}")
+
 if args.file is None:
     files = os.listdir(f"data/{args.root}")
     files.remove("WorldFrame.npy")
-    files.remove("RobotFrame.npy")
+    try:
+        files.remove("RobotFrame.npy")
+    except:
+        print("No RobotFrame.npy")
+        pass
     for i,file in enumerate(files):
         wrist_poses, wrist_orns, hand_qs, arm_qs = load_traj(f"data/{args.root}/{file}")
-        np.savez(f"trajs/arcap_{args.exp_name}_{i}.npz", wrist_poses=wrist_poses, wrist_orns=wrist_orns, arm_qs = arm_qs, hand_qs=hand_qs)
+        np.savez(f"trajs/{args.exp_name}/arcap_{args.exp_name}_{i}.npz", wrist_poses=wrist_poses, wrist_orns=wrist_orns, arm_qs = arm_qs, hand_qs=hand_qs)
 else:
     wrist_poses, wrist_orns, hand_qs, arm_qs = load_traj(f"data/{args.root}/{args.file}")
-    np.savez(f"trajs/arcap_{args.exp_name}.npz", wrist_poses=wrist_poses, wrist_orns=wrist_orns, arm_qs = arm_qs, hand_qs=hand_qs)
+    np.savez(f"trajs/{args.exp_name}/arcap_{args.exp_name}.npz", wrist_poses=wrist_poses, wrist_orns=wrist_orns, arm_qs = arm_qs, hand_qs=hand_qs)

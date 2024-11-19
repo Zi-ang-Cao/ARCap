@@ -5,6 +5,8 @@ DepthAPI-URP/Temp/
 DepthAPI-URP/Logs/
 DepthAPI-URP/DepthAPI-URP_BurstDebugInformation_DoNotShip/
 data_processing/data/
+data_processing/data_archieved/
+data_processed_old/
 data_processing/dexcap_data/
 data_processing/data_processed/
 data_processing/trajs/
