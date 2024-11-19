@@ -107,10 +107,10 @@ def set_system_pose(hand, arm, arm_q, hand_q):
     return hand_xyz + hand_orn.apply(np.array([0.0, 0.12, -0.05]))
 
 def get_rgbd_image(projectionMat, viewMat):
-    img = pb.getCameraImage(IMAGE_SHAPE[0], IMAGE_SHAPE[1], viewMatrix=viewMat, projectionMatrix=projectionMat)
+    img = list(pb.getCameraImage(IMAGE_SHAPE[0], IMAGE_SHAPE[1], viewMatrix=viewMat, projectionMatrix=projectionMat))
     if not isinstance(img[3], np.ndarray):
         img[3] = np.array(img[3]).reshape(IMAGE_SHAPE)
-        img[2] = np.array(img[2]).reshape(IMAGE_SHAPE[0],IMAGE_SHAPE[1],3)
+        img[2] = np.array(img[2]).reshape(IMAGE_SHAPE[0],IMAGE_SHAPE[1],4)
     depth_image = NEAR * FAR /(FAR - (FAR - NEAR)*img[3])
     rgb_image = np.asarray(img[2])[:,:,:3]
     depth_image = (depth_image * 1000).astype(np.uint16)
@@ -180,8 +180,8 @@ def read_data(path, target_path, delta_orn, delta_pos, stride):
                 world_pcd = crop_pcd(world_pcd, (-0.4,0.1, 0.01), (-0.1,0.6,0.4))
                 robot_pcd = crop_pcd(robot_pcd, (-0.4,0.1, 0.01), (-0.1,0.6,0.4))
             else:
-                world_pcd = crop_pcd(world_pcd, (0.1,0.1, 0.005), (0.7,0.3,0.4))
-                robot_pcd = crop_pcd(robot_pcd, (0.1,0.1, 0.005), (0.7,0.3,0.4))
+                world_pcd = crop_pcd(world_pcd, (0.1,0.1, 0.005), (0.7,0.4,0.4))
+                robot_pcd = crop_pcd(robot_pcd, (0.1,0.1, 0.005), (0.7,0.4,0.4))
             vis_pcd.points = o3d.utility.Vector3dVector(np.vstack([world_pcd[:,:3], robot_pcd[:,:3]]))
             vis_pcd.colors = o3d.utility.Vector3dVector(np.vstack([world_pcd[:,3:], robot_pcd[:,3:]]))
             if args.visualize:
@@ -194,8 +194,8 @@ def read_data(path, target_path, delta_orn, delta_pos, stride):
                 world_pcd = crop_pcd(world_pcd, (-0.4,0.1, 0.01), (-0.1,0.6,0.4))
                 robot_pcd = crop_pcd(robot_pcd, (-0.4,0.1, 0.01), (-0.1,0.6,0.4))
             else:
-                world_pcd = crop_pcd(world_pcd, (0.1,0.1, 0.005), (0.7,0.3,0.4))
-                robot_pcd = crop_pcd(robot_pcd, (0.1,0.1, 0.005), (0.7,0.3,0.4))
+                world_pcd = crop_pcd(world_pcd, (0.1,0.1, 0.005), (0.7,0.4,0.4))
+                robot_pcd = crop_pcd(robot_pcd, (0.1,0.1, 0.005), (0.7,0.4,0.4))
             vis_pcd.points = o3d.utility.Vector3dVector(np.vstack([world_pcd[:,:3], robot_pcd[:,:3]]))
             vis_pcd.colors = o3d.utility.Vector3dVector(np.vstack([world_pcd[:,3:], robot_pcd[:,3:]]))
             if args.visualize:
@@ -222,8 +222,12 @@ quest_t = quest_tf["rel_pos"]
 delta_orn = quest_R.inv() * depth_R
 delta_pos = quest_R.inv().apply(depth_t - quest_t)
 
-if os.path.isdir("data_processed"):
+# Check if the directory exists
+if not os.path.exists("data_processed"):
     os.mkdir("data_processed")
+else:
+    print("The directory 'data_processed' already exists.")
+
 
 # Create virtual robot and arm sample point cloud from head pose Should make leap hand black
 if not args.use_gripper:
