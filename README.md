@@ -19,6 +19,7 @@ cd data_processing
 #### Install python packages
 Python Version: `3.11`
 ```
+conda create -n arcap python=3.11 -y
 pip install -r requirements.txt
 ```
 ### Setup local area network
@@ -56,10 +57,18 @@ python data_collection_server.py # --no_camera if D435 is not connected
 ```
 2. Parallel jaw gripper: in `data_processing` folder, run:
 ```
-python data_collection_server.py --handedness left # --no_camera if D435 is not connected
+cd data_processing
+python data_collection_server.py --handedness left 
+# --no_camera if D435 is not connected
 ```
 
 All collected data will be stored in `data/<yyyy-mm-dd-hh-mm-ss>`, each trajectory has its own folder named: `data/<yyyy-mm-dd-hh-mm-ss>/<yyyy-mm-dd-hh-mm-ss>`. Each frame is stored as a `.npz`
+
+#### Extract the replay trajectory
+```Python
+
+python gen_traj.py --root 2024-11-18-15-39-00 --exp_name debug_assemble_v3
+```
 
 #### Post-process data to robomimic compatible format
 In `data_processing` folder, `mkdir data_processed`
