@@ -67,7 +67,7 @@ All collected data will be stored in `data/<yyyy-mm-dd-hh-mm-ss>`, each trajecto
 #### Extract the replay trajectory
 ```Python
 
-python gen_traj.py --root 2024-11-18-15-39-00 --exp_name debug_assemble_v3
+python gen_traj.py --root 2024-11-18-17-49-20_assemble_level_1_pink_on_blue --exp_name assemble_level_1_pink_on_blue
 ```
 
 #### Post-process data to robomimic compatible format
@@ -78,6 +78,15 @@ python convert_data_with_robot.py --root_path <yyyy-mm-dd-hh-mm-ss> --visualize
 ```
 2. Parallel jaw gripper: in `data_processing` folder, run:
 ```
+
+
+python convert_data_with_robot.py --root_path 2024-11-20-16-09-30_assemble_level_1_pink_on_yellow --use_gripper
+
+
+python convert_data_with_robot.py --root_path 2024-11-20-16-09-30_assemble_level_1_pink_on_blue --visualize --use_gripper
+
+
+
 python convert_data_with_robot.py --root_path <yyyy-mm-dd-hh-mm-ss> --use_gripper --visualize
 ```
 

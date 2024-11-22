@@ -1,14 +1,16 @@
 import os
 import shutil
 
-copy_to_new_folder = True
+copy_to_new_folder = False
+# copy_to_new_folder = True
+
 
 # Path to the root folder
-root_folder = "./data/2024-11-18-17-49-20_backup"
+root_folder = "./data/2024-11-20-16-09-30"
 
 # Paths to new folders A and B
-folder_a = os.path.abspath(os.path.join(root_folder, "../2024-11-18-17-49-20_assemble_level_1_pink_on_yellow"))
-folder_b = os.path.abspath(os.path.join(root_folder, "../2024-11-18-17-49-20_assemble_level_1_pink_on_blue"))
+folder_a = os.path.abspath(os.path.join(root_folder, "../2024-11-20-16-09-30_assemble_level_1_pink_on_yellow"))
+folder_b = os.path.abspath(os.path.join(root_folder, "../2024-11-20-16-09-30_assemble_level_1_pink_on_blue"))
 
 # Create folders A and B if they don't exist
 os.makedirs(folder_a, exist_ok=True)
