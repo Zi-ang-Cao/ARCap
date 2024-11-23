@@ -1,3 +1,6 @@
+'''
+python split_demos.py
+'''
 import os
 import shutil
 
@@ -6,11 +9,11 @@ copy_to_new_folder = False
 
 
 # Path to the root folder
-root_folder = "./data/2024-11-20-16-09-30"
+root_folder = "./data/2024-11-22-21-32-44"
 
 # Paths to new folders A and B
-folder_a = os.path.abspath(os.path.join(root_folder, "../2024-11-20-16-09-30_assemble_level_1_pink_on_yellow"))
-folder_b = os.path.abspath(os.path.join(root_folder, "../2024-11-20-16-09-30_assemble_level_1_pink_on_blue"))
+folder_a = os.path.abspath(os.path.join(root_folder, "../2024-11-22-21-32-44_drop_yellow_lego_in_blue_jar"))
+folder_b = os.path.abspath(os.path.join(root_folder, "../2024-11-22-21-32-44_drop_yellow_lego_in_white_box"))
 
 # Create folders A and B if they don't exist
 os.makedirs(folder_a, exist_ok=True)
@@ -23,7 +26,7 @@ print(f"Found {len(subfolders)} subfolders in the root folder.")
 # Copy the first 61 subfolders to folder A, and the rest to folder B
 for i, subfolder in enumerate(subfolders):
     src = os.path.join(root_folder, subfolder)
-    if i < 61:
+    if i < 65:
         dst = os.path.join(folder_a, subfolder)
     else:
         dst = os.path.join(folder_b, subfolder)

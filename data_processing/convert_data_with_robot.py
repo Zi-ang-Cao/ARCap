@@ -1,3 +1,12 @@
+'''
+cd data_processing
+python convert_data_with_robot.py --root_path 2024-11-22-21-32-44_drop_yellow_lego_in_white_box --use_gripper --visualize --z_offset -0.015
+
+python convert_data_with_robot.py --root_path 2024-11-22-21-32-44_drop_yellow_lego_in_blue_jar --use_gripper --visualize --z_offset -0.015
+
+'''
+
+
 import numpy as np
 import open3d as o3d
 import pybullet as pb
@@ -180,8 +189,8 @@ def read_data(path, target_path, delta_orn, delta_pos, stride):
                 world_pcd = crop_pcd(world_pcd, (-0.4,0.1, 0.01), (-0.1,0.6,0.4))
                 robot_pcd = crop_pcd(robot_pcd, (-0.4,0.1, 0.01), (-0.1,0.6,0.4))
             else:
-                world_pcd = crop_pcd(world_pcd, (0.1,0.1, 0.005), (0.7,0.4,0.4))
-                robot_pcd = crop_pcd(robot_pcd, (0.1,0.1, 0.005), (0.7,0.4,0.4))
+                world_pcd = crop_pcd(world_pcd, (0.1,0.1, 0.005), (0.6,0.7,0.5))
+                robot_pcd = crop_pcd(robot_pcd, (0.1,0.1, 0.005), (0.6,0.7,0.5))
             vis_pcd.points = o3d.utility.Vector3dVector(np.vstack([world_pcd[:,:3], robot_pcd[:,:3]]))
             vis_pcd.colors = o3d.utility.Vector3dVector(np.vstack([world_pcd[:,3:], robot_pcd[:,3:]]))
             if args.visualize:
@@ -194,8 +203,8 @@ def read_data(path, target_path, delta_orn, delta_pos, stride):
                 world_pcd = crop_pcd(world_pcd, (-0.4,0.1, 0.01), (-0.1,0.6,0.4))
                 robot_pcd = crop_pcd(robot_pcd, (-0.4,0.1, 0.01), (-0.1,0.6,0.4))
             else:
-                world_pcd = crop_pcd(world_pcd, (0.1,0.1, 0.005), (0.7,0.4,0.4))
-                robot_pcd = crop_pcd(robot_pcd, (0.1,0.1, 0.005), (0.7,0.4,0.4))
+                world_pcd = crop_pcd(world_pcd, (0.1,0.1, 0.005), (0.6,0.7,0.5))
+                robot_pcd = crop_pcd(robot_pcd, (0.1,0.1, 0.005), (0.6,0.7,0.5))
             vis_pcd.points = o3d.utility.Vector3dVector(np.vstack([world_pcd[:,:3], robot_pcd[:,:3]]))
             vis_pcd.colors = o3d.utility.Vector3dVector(np.vstack([world_pcd[:,3:], robot_pcd[:,3:]]))
             if args.visualize:
@@ -245,6 +254,9 @@ for j, root_path in enumerate(args.root_path):
     if not os.path.exists(f"data_processed/{root_path}"):
         os.mkdir(f"data_processed/{root_path}")
     for i,folder in enumerate(folders):
+        if i == 0:
+            # save the current config (args) to the folder for future reference
+            np.savez(f"data_processed/{root_path}/config.npz", args=args)
         if i < args.start_idx:
             continue
         target_path = f"data_processed/{root_path}/demo_{i}"

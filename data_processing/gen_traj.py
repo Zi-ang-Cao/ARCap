@@ -1,3 +1,8 @@
+'''
+python gen_traj.py --root 2024-11-22-21-32-44_drop_yellow_lego_in_blue_jar --exp_name drop_yellow_lego_in_blue_jar_v1
+
+'''
+
 import numpy as np
 import os
 from scipy.spatial.transform import Rotation

@@ -310,7 +310,8 @@ class QuestLeftArmGripperModule(QuestRobotModule):
         # midpoint_pos = (2*thumb_pos + index_pos + middle_pos)/4
 
         # OPTION 2: use the 1/3 point of from the thumb to the middle&index fingertip
-        midpoint_pos = (4*thumb_pos + index_pos + middle_pos)/6
+        # midpoint_pos = (4*thumb_pos + index_pos + middle_pos)/6
+        midpoint_pos = (14*thumb_pos + index_pos + middle_pos)/16
         return np.array([distance/2, distance/2]), midpoint_pos
 
     def solve_system_world(self, wrist_pos, wrist_orn, tip_poses):
