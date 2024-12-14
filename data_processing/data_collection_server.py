@@ -7,7 +7,11 @@ import pybullet as pb
 from rigidbodySento import create_primitive_shape
 from ip_config import *
 from rokoko_module import RokokoModule
-from realsense_module import DepthCameraModule
+USE_ZED = True
+if USE_ZED:
+    from zed_module import ZEDCameraModule
+else:
+    from realsense_module import DepthCameraModule
 from quest_robot_module import QuestRightArmLeapModule, QuestLeftArmGripperModule
 import os
 
@@ -26,7 +30,10 @@ if __name__ == "__main__":
     for i in range(4):
         vis_sp.append(create_primitive_shape(pb, 0.1, pb.GEOM_SPHERE, [0.02], color=c_code[i]))
     if not args.no_camera:
-        camera = DepthCameraModule(is_decimate=False, visualize=False)
+        if USE_ZED:
+            camera = ZEDCameraModule(is_decimate=False, visualize=False)
+        else:
+            camera = DepthCameraModule(is_decimate=False, visualize=False)
     rokoko = RokokoModule(VR_HOST, HAND_INFO_PORT, ROKOKO_PORT)
     if args.handedness == "right":
         quest = QuestRightArmLeapModule(VR_HOST, LOCAL_HOST, POSE_CMD_PORT, IK_RESULT_PORT, vis_sp=None)
